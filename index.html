@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="金融證照考試日期一覽，TABF金研院、SFI證基會，報名截止日快速查詢">
+  <title>金融證照考試日期</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F1F5F9;
+      --surface: #FFFFFF;
+      --border: #E2E8F0;
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #94A3B8;
+      --radius: 14px;
+      --shadow: 0 1px 3px rgba(0,0,0,.07), 0 4px 12px rgba(0,0,0,.05);
+      --shadow-hover: 0 4px 16px rgba(0,0,0,.12);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC",
+                   "Noto Sans TC", sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 100%);
+      color: white;
+      padding: 28px 20px 24px;
+      text-align: center;
+    }
+    .site-header h1 { font-size: clamp(1.4rem, 5vw, 1.9rem); font-weight: 800; letter-spacing: -.02em; }
+    .site-header p { margin-top: 5px; font-size: .85rem; opacity: .65; }
+    .updated-chip {
+      display: inline-block;
+      margin-top: 10px;
+      background: rgba(255,255,255,.12);
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: .72rem;
+      opacity: .8;
+    }
+
+    /* ── Source Tabs ── */
+    .source-tabs {
+      display: flex;
+      background: #1E293B;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .source-tab {
+      flex: 1;
+      padding: 10px 8px;
+      text-align: center;
+      font-size: .82rem;
+      font-weight: 600;
+      color: rgba(255,255,255,.45);
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      border-bottom: 3px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .source-tab:hover { color: rgba(255,255,255,.75); }
+    .source-tab.active { color: #fff; border-bottom-color: var(--tab-color, #60A5FA); }
+
+    /* ── Filter Bar ── */
+    .filter-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 14px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .filter-bar::-webkit-scrollbar { display: none; }
+    .filter-tabs { display: flex; gap: 6px; padding: 9px 0; width: max-content; min-width: 100%; }
+    .tab-btn {
+      flex-shrink: 0;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: .8rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-secondary);
+      transition: all .15s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { background: #F1F5F9; }
+    .tab-btn.active {
+      background: var(--active-color, #0F172A);
+      border-color: transparent;
+      color: #fff;
+    }
+
+    /* ── Alert ── */
+    .alert-wrap { padding: 12px 14px 0; }
+    .alert-banner {
+      background: #FEF3C7;
+      border: 1px solid #F59E0B;
+      border-radius: 10px;
+      padding: 9px 14px;
+      font-size: .82rem;
+      color: #92400E;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 680px; margin: 0 auto; padding: 16px 14px 56px; }
+
+    /* ── Section Header ── */
+    .group-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 20px 0 10px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--group-color, #E2E8F0);
+    }
+    .group-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--group-color); }
+    .group-label { font-size: .78rem; font-weight: 700; color: var(--group-color); letter-spacing: .06em; text-transform: uppercase; }
+    .group-count { margin-left: auto; font-size: .72rem; color: var(--text-muted); background: #F1F5F9; border-radius: 10px; padding: 1px 8px; }
+
+    /* ── Book Section ── */
+    .book-section { margin-bottom: 10px; transition: opacity .15s; }
+    .book-section.hidden { display: none; }
+
+    /* ── Exam Card ── */
+    .exam-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: box-shadow .18s, transform .18s;
+    }
+    .exam-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+    .exam-card.past { opacity: .4; }
+
+    .card-accent { height: 4px; background: var(--book-color); }
+
+    .card-body { padding: 14px 16px 16px; }
+
+    /* Book title row */
+    .card-title-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .book-icon-sm {
+      width: 36px; height: 36px;
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .book-name { font-size: .95rem; font-weight: 700; line-height: 1.3; }
+    .book-name small { display: block; font-size: .72rem; font-weight: 500; color: var(--text-muted); margin-top: 1px; }
+    .book-link-btn {
+      margin-left: auto;
+      flex-shrink: 0;
+      font-size: .72rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 8px;
+      white-space: nowrap;
+    }
+    .book-link-btn:hover { color: var(--text-secondary); border-color: #CBD5E1; }
+
+    /* ── Written exam section ── */
+    .written-section {}
+    .exam-date-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .exam-date-big { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; }
+    .exam-date-big .y { font-size: .75rem; font-weight: 500; color: var(--text-muted); display: block; margin-bottom: 1px; }
+    .exam-date-big .wd { font-size: .8rem; font-weight: 500; color: var(--text-secondary); margin-left: 4px; }
+
+    /* Status badge */
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: .76rem; font-weight: 600;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .status-badge::before { content:""; width:6px; height:6px; border-radius:50%; background:currentColor; opacity:.7; }
+    .s-open     { background:#DCFCE7; color:#15803D; }
+    .s-soon     { background:#FEF3C7; color:#B45309; }
+    .s-closed   { background:#FEE2E2; color:#B91C1C; }
+    .s-upcoming { background:#EFF6FF; color:#1D4ED8; }
+    .s-past     { background:#F1F5F9; color:#64748B; }
+    .s-computer { background:#F3E8FF; color:#7C3AED; }
+
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; margin-bottom: 12px; }
+    .info-item label { display:block; font-size:.68rem; font-weight:600; color:var(--text-muted); letter-spacing:.05em; text-transform:uppercase; margin-bottom:2px; }
+    .info-item span { font-size:.84rem; font-weight:500; color:var(--text-secondary); }
+    .info-item span.hi { color:var(--text-primary); font-weight:600; }
+    .warn span { color:#B45309; }
+
+    /* ── Computer exam section ── */
+    .computer-section {
+      background: #FAFAFA;
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .computer-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .computer-text {}
+    .computer-title { font-size: .9rem; font-weight: 700; color: #7C3AED; }
+    .computer-desc { font-size: .78rem; color: var(--text-secondary); margin-top: 3px; }
+
+    /* Note */
+    .card-note {
+      font-size: .78rem; color: var(--text-secondary);
+      background: #F8FAFC; border-radius: 8px;
+      padding: 7px 11px; margin-bottom: 12px;
+    }
+
+    /* Action button */
+    .reg-btn {
+      display: block;
+      background: var(--book-color);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: .86rem; font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: filter .15s, transform .15s;
+    }
+    .reg-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .reg-btn.disabled { background:#E2E8F0; color:#94A3B8; pointer-events:none; }
+
+    /* Divider */
+    .section-divider { height: 1px; background: var(--border); margin: 4px 0 12px; }
+    .exam-divider { border: none; border-top: 1px dashed var(--border); margin: 10px 0; }
+    .dim-section { opacity: 0.45; }
+
+    /* ── Empty / Footer ── */
+    .empty-state { text-align:center; padding:48px 24px; color:var(--text-muted); display:none; }
+    .empty-state.show { display:block; }
+    .site-footer {
+      text-align:center; padding:20px 16px;
+      font-size:.75rem; color:var(--text-muted);
+      border-top: 1px solid var(--border);
+    }
+    .site-footer a { color:var(--text-muted); text-decoration:none; }
+
+    @media (max-width:400px) {
+      .info-grid { grid-template-columns: 1fr; }
+      .exam-date-big { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1 id="site-title"></h1>
+  <p id="site-subtitle"></p>
+  <span class="updated-chip" id="updated-label"></span>
+</header>
+
+<div class="source-tabs" id="sourceTabs"></div>
+
+<div class="filter-bar"><div class="filter-tabs" id="filterTabs"></div></div>
+
+<div class="alert-wrap" id="alertWrap" style="display:none">
+  <div class="alert-banner">⚠️ <span id="alertText"></span></div>
+</div>
+
+<div class="container">
+  <div id="bookList"></div>
+  <div class="empty-state" id="emptyState">
+    <div style="font-size:2.5rem">📭</div>
+    <p>目前沒有符合的考試</p>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <p>資料僅供參考，報名請以官方公告為準。</p>
+  <p style="margin-top:5px">由 <a id="footer-pub" href="#"></a> 整理提供</p>
+</footer>
+
+<script src="data.js"></script>
+<script>
+// ── Helpers ──────────────────────────────────────────────
+function pd(s) { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
+function fmt(s) { const d=pd(s); return `${d.getMonth()+1}/${d.getDate()}`; }
+function fmtFull(s) { const d=pd(s); return `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`; }
+const WD = ['日','一','二','三','四','五','六'];
+function wd(s) { return WD[pd(s).getDay()]; }
+function diff(s) { const t=new Date(); t.setHours(0,0,0,0); return Math.round((pd(s)-t)/86400000); }
+
+function writtenStatus(exam) {
+  const now = new Date(); now.setHours(0,0,0,0);
+  const examD = pd(exam.date), regS = pd(exam.regStart), regE = pd(exam.regEnd);
+  if (now > examD) return 'past';
+  if (now > regE)  return 'closed';
+  if (now >= regS) return diff(exam.regEnd) <= 7 ? 'soon' : 'open';
+  return 'upcoming';
+}
+
+function badgeHtml(status, exam) {
+  const map = {
+    open:     ['s-open',     '報名中'],
+    soon:     ['s-soon',     null],
+    closed:   ['s-closed',   '報名已截止'],
+    upcoming: ['s-upcoming', null],
+    past:     ['s-past',     '已結束'],
+    computer: ['s-computer', '電腦應試'],
+  };
+  let [cls, label] = map[status];
+  if (status === 'soon')     label = `報名截止倒數 ${diff(exam.regEnd)} 天`;
+  if (status === 'upcoming') label = `${diff(exam.regStart)} 天後開放報名`;
+  return `<span class="status-badge ${cls}">${label}</span>`;
+}
+
+// ── Card builder ─────────────────────────────────────────
+function buildCard(book) {
+  const written  = book.exams.filter(e => e.examType === 'written');
+  const compExam = book.exams.find(e => e.examType === 'computer');
+  const allPast  = written.length > 0 && written.every(e => writtenStatus(e) === 'past') && !compExam;
+  const typeLabel = compExam && written.length > 0 ? '筆試 + 電腦應試'
+                  : compExam ? '電腦應試' : '筆試';
+
+  let examSections = '';
+
+  written.forEach((exam, idx) => {
+    const status = writtenStatus(exam);
+    const isPastExam = status === 'past';
+    const isWarn = status === 'soon';
+    if (idx > 0) examSections += '<div class="exam-divider"></div>';
+    examSections += `
+      <div class="written-section${isPastExam ? ' dim-section' : ''}">
+        <div class="exam-date-row">
+          <div class="exam-date-big">
+            <span class="y">${exam.date.slice(0,4)} 年</span>
+            ${fmt(exam.date)}<span class="wd">（${wd(exam.date)}）</span>
+          </div>
+          ${badgeHtml(status, exam)}
+        </div>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>報名開始</label><span>${fmtFull(exam.regStart)}</span>
+          </div>
+          <div class="info-item${isWarn ? ' warn' : ''}">
+            <label>報名截止</label>
+            <span class="${isWarn ? 'hi' : ''}">${fmtFull(exam.regEnd)}</span>
+          </div>
+          <div class="info-item">
+            <label>考試地點</label><span>${exam.location}</span>
+          </div>
+          <div class="info-item">
+            <label>距考試</label>
+            <span>${isPastExam ? '已結束' : diff(exam.date) + ' 天'}</span>
+          </div>
+        </div>
+        ${exam.note ? `<div class="card-note">📌 ${exam.note}</div>` : ''}
+      </div>`;
+  });
+
+  if (compExam) {
+    if (written.length > 0) examSections += '<div class="exam-divider"></div>';
+    examSections += `
+      <div class="computer-section">
+        <div class="computer-icon">🖥️</div>
+        <div class="computer-text">
+          <div class="computer-title">電腦應試・持續開放報名</div>
+          <div class="computer-desc">📍 ${compExam.location}</div>
+        </div>
+        ${badgeHtml('computer', compExam)}
+      </div>
+      ${compExam.note ? `<div class="card-note">📌 ${compExam.note}</div>` : ''}`;
+  }
+
+  const canReg = !!compExam || written.some(e => {
+    const s = writtenStatus(e);
+    return s === 'open' || s === 'soon' || s === 'upcoming';
+  });
+
+  return `
+  <div class="exam-card${allPast ? ' past' : ''}" style="--book-color:${book.color}">
+    <div class="card-accent"></div>
+    <div class="card-body">
+      <div class="card-title-row">
+        <div class="book-icon-sm" style="background:${book.color}22;color:${book.color}">${book.icon}</div>
+        <div class="book-name">
+          ${book.name}
+          <small>${book.group.toUpperCase()} · ${typeLabel}</small>
+        </div>
+        <a href="${book.officialSite}" target="_blank" class="book-link-btn">官網 ↗</a>
+      </div>
+      <div class="section-divider"></div>
+      ${examSections}
+      <a href="${book.officialSite}" target="_blank" class="reg-btn${canReg ? '' : ' disabled'}">${canReg ? '前往官方報名頁面 →' : '報名已截止'}</a>
+    </div>
+  </div>`;
+}
+
+// ── Render ────────────────────────────────────────────────
+let activeGroup = 'all';
+let activeBook  = 'all';
+
+function render() {
+  const list = document.getElementById('bookList');
+  const grouped = {};
+
+  GROUPS.forEach(g => { grouped[g.id] = []; });
+  BOOKS.forEach(b => {
+    if (activeGroup !== 'all' && b.group !== activeGroup) return;
+    if (activeBook  !== 'all' && b.id    !== activeBook)  return;
+    if (!grouped[b.group]) grouped[b.group] = [];
+    grouped[b.group].push(b);
+  });
+
+  let html = '';
+  let total = 0;
+  GROUPS.forEach(g => {
+    const books = grouped[g.id] || [];
+    if (!books.length) return;
+    total += books.length;
+    html += `
+      <div class="group-header" style="--group-color:${g.color}">
+        <span class="group-dot"></span>
+        <span class="group-label">${g.label}</span>
+        <span class="group-count">${books.length} 科</span>
+      </div>`;
+    books.forEach(b => {
+      html += `<div class="book-section">${buildCard(b)}</div>`;
+    });
+  });
+
+  list.innerHTML = html;
+  document.getElementById('emptyState').classList.toggle('show', total === 0);
+
+  // sync tab active
+  document.querySelectorAll('.source-tab').forEach(t =>
+    t.classList.toggle('active', t.dataset.gid === activeGroup));
+  document.querySelectorAll('.tab-btn').forEach(t =>
+    t.classList.toggle('active', t.dataset.bid === activeBook));
+}
+
+// ── Alerts ────────────────────────────────────────────────
+function showAlerts() {
+  const msgs = [];
+  BOOKS.forEach(b => {
+    b.exams.forEach(e => {
+      if (e.examType !== 'written') return;
+      const s = writtenStatus(e);
+      if (s === 'soon') msgs.push(`${b.shortName} 報名截止倒數 ${diff(e.regEnd)} 天`);
+      if (s === 'upcoming' && diff(e.regStart) <= 7)
+        msgs.push(`${b.shortName} 報名 ${diff(e.regStart)} 天後開放`);
+    });
+  });
+  if (msgs.length) {
+    document.getElementById('alertWrap').style.display = '';
+    document.getElementById('alertText').textContent = msgs.join('　|　');
+  }
+}
+
+// ── Init ──────────────────────────────────────────────────
+function init() {
+  document.title = SITE_CONFIG.title;
+  document.getElementById('site-title').textContent    = SITE_CONFIG.title;
+  document.getElementById('site-subtitle').textContent = SITE_CONFIG.subtitle;
+  document.getElementById('updated-label').textContent = `更新：${SITE_CONFIG.lastUpdated}`;
+  const fp = document.getElementById('footer-pub');
+  fp.textContent = SITE_CONFIG.publisherName;
+  fp.href = SITE_CONFIG.publisherUrl;
+
+  // Source tabs
+  const st = document.getElementById('sourceTabs');
+  const allTab = document.createElement('button');
+  allTab.className = 'source-tab active';
+  allTab.dataset.gid = 'all';
+  allTab.style.setProperty('--tab-color','#60A5FA');
+  allTab.textContent = '全部';
+  allTab.onclick = () => { activeGroup='all'; activeBook='all'; buildBookTabs(); render(); };
+  st.appendChild(allTab);
+
+  GROUPS.forEach(g => {
+    const btn = document.createElement('button');
+    btn.className = 'source-tab';
+    btn.dataset.gid = g.id;
+    btn.style.setProperty('--tab-color', g.color);
+    btn.textContent = g.label;
+    btn.onclick = () => { activeGroup=g.id; activeBook='all'; buildBookTabs(); render(); };
+    st.appendChild(btn);
+  });
+
+  buildBookTabs();
+  showAlerts();
+  render();
+}
+
+function buildBookTabs() {
+  const bar = document.getElementById('filterTabs');
+  bar.innerHTML = '';
+
+  const allBtn = document.createElement('button');
+  allBtn.className = 'tab-btn active';
+  allBtn.dataset.bid = 'all';
+  allBtn.style.setProperty('--active-color','#0F172A');
+  allBtn.textContent = '全部考科';
+  allBtn.onclick = () => { activeBook='all'; render(); };
+  bar.appendChild(allBtn);
+
+  const visible = activeGroup === 'all'
+    ? BOOKS
+    : BOOKS.filter(b => b.group === activeGroup);
+
+  visible.forEach(b => {
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn';
+    btn.dataset.bid = b.id;
+    btn.style.setProperty('--active-color', b.color);
+    btn.textContent = b.shortName;
+    btn.onclick = () => { activeBook=b.id; render(); };
+    bar.appendChild(btn);
+  });
+}
+
+init();
+</script>
+</body>
+</html>
