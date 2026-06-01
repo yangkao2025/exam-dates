@@ -18,16 +18,17 @@
 
 const SITE_CONFIG = {
   title: "金融證照考試日期",
-  subtitle: "TABF ✦ SFI — 一鍵掌握報名時程",
+  subtitle: "TABF ✦ SFI ✦ IPAS — 一鍵掌握報名時程",
   publisherName: "東展出版社",
   publisherUrl: "https://",       // ← 改成你的官方網站
-  lastUpdated: "2026-06-01"
+  lastUpdated: "2026-06-02"
 };
 
 // ── 分組標籤（側欄篩選用）──────────────────────────
 const GROUPS = [
   { id: "tabf", label: "TABF 金研院", color: "#1E40AF" },
   { id: "sfi",  label: "SFI 證基會",  color: "#7C3AED" },
+  { id: "ipas", label: "IPAS 產業人才", color: "#0D9488" },
 ];
 
 // ── 考科清單 ────────────────────────────────────────
@@ -731,6 +732,80 @@ const BOOKS = [
         examType: "computer",
         location: "台北、台中、高雄",
         note: "電腦應試持續開放"
+      }
+    ]
+  },
+
+  // ── IPAS 產業人才能力鑑定 ─────────────────────────────
+
+  {
+    id: "ipas-netzero",
+    name: "淨零碳規劃管理師能力鑑定",
+    shortName: "淨零",
+    group: "ipas",
+    color: "#065F46",
+    icon: "🌱",
+    officialSite: "https://ipd.nat.gov.tw/ipas/certification/NZ/exam-info",
+    exams: [
+      {
+        examType: "written",
+        date: "2026-08-15",
+        regStart: "2026-04-11",
+        regEnd: "2026-07-08",
+        location: "台北、新北、桃園、新竹、台中、雲林、台南、高雄、花蓮",
+        note: "【初級】115年第2次"
+      },
+      {
+        examType: "written",
+        date: "2026-08-22",
+        regStart: "2026-04-11",
+        regEnd: "2026-07-08",
+        location: "台北、新北、台中、雲林、高雄、澎湖、金門",
+        note: "【中級】115年第2次"
+      },
+      {
+        examType: "written",
+        date: "2026-11-07",
+        regStart: "2026-07-09",
+        regEnd: "2026-09-22",
+        location: "台北、新北、桃園、新竹、台中、雲林、台南、高雄、花蓮",
+        note: "【初級】115年第3次"
+      }
+    ]
+  },
+
+  {
+    id: "ipas-ai",
+    name: "AI應用規劃師能力鑑定",
+    shortName: "AI規劃師",
+    group: "ipas",
+    color: "#1D4ED8",
+    icon: "🤖",
+    officialSite: "https://ipd.nat.gov.tw/ipas/certification/AIAP/exam-info",
+    exams: [
+      {
+        examType: "written",
+        date: "2026-08-15",
+        regStart: "2026-04-11",
+        regEnd: "2026-07-08",
+        location: "台北、新北、桃園、新竹、台中、雲林、台南、高雄、花蓮",
+        note: "【初級】115年第3次"
+      },
+      {
+        examType: "written",
+        date: "2026-11-07",
+        regStart: "2026-07-09",
+        regEnd: "2026-09-22",
+        location: "台北、新北、桃園、新竹、台中、雲林、台南、高雄、花蓮",
+        note: "【初級】115年第4次"
+      },
+      {
+        examType: "written",
+        date: "2026-11-14",
+        regStart: "2026-05-22",
+        regEnd: "2026-09-22",
+        location: "台北、新北、桃園、台中、高雄",
+        note: "【中級】115年第2次"
       }
     ]
   },
