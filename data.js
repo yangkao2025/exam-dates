@@ -19,7 +19,7 @@
 const SITE_CONFIG = {
   title: "金融證照考試日期",
   subtitle: "TABF ✦ SFI — 一鍵掌握報名時程",
-  publisherName: "出版社名稱",    // ← 改成你的出版社名稱
+  publisherName: "東展出版社",
   publisherUrl: "https://",       // ← 改成你的官方網站
   lastUpdated: "2026-06-01"
 };
