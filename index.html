@@ -2,550 +2,509 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="金融證照考試日期一覽，TABF金研院、SFI證基會，報名截止日快速查詢">
-  <title>金融證照考試日期</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="金融證照考照日期：金研院、證基會、iPAS 考科的報名期間、報名截止與考試日期，手機查詢。">
+  <meta name="color-scheme" content="light">
+  <title>考照日期</title>
+  <link rel="icon" href="data:,">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #F1F5F9;
+      --page: #F3F6FA;
       --surface: #FFFFFF;
-      --border: #E2E8F0;
-      --text-primary: #0F172A;
-      --text-secondary: #475569;
-      --text-muted: #94A3B8;
-      --radius: 14px;
-      --shadow: 0 1px 3px rgba(0,0,0,.07), 0 4px 12px rgba(0,0,0,.05);
-      --shadow-hover: 0 4px 16px rgba(0,0,0,.12);
+      --ink: #112741;
+      --muted: #4F6074;
+      --stroke: #CBD8E8;
+      --blue: #174E83;
+      --blue-bg: #E8F1FA;
+      --green: #155B42;
+      --green-bg: #DEF1E8;
+      --amber: #764500;
+      --amber-bg: #FFF0DB;
+      --red: #8A1C1C;
+      --red-bg: #FBE4E4;
+      --gray-bg: #E9EEF4;
+      --radius: 10px;
     }
-    html { scroll-behavior: smooth; }
+    html { -webkit-text-size-adjust: 100%; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC",
-                   "Noto Sans TC", sans-serif;
-      background: var(--bg);
-      color: var(--text-primary);
-      line-height: 1.5;
-      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", "Segoe UI", sans-serif;
+      background: var(--page);
+      color: var(--ink);
+      line-height: 1.45;
+      font-size: 15px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+    main { max-width: 560px; margin: 0 auto; padding: 0 16px 40px; }
+    a { color: var(--blue); }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    [hidden] { display: none !important; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    /* ── 頁首 ── */
+    .hdr { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 2px 10px; padding: 14px 0 8px; }
+    .hdr .brand { flex-basis: 100%; font-size: 12px; color: var(--muted); }
+    .hdr h1 { font-size: 24px; font-weight: 800; letter-spacing: -.01em; }
+    .hdr .checked { font-size: 12px; color: var(--muted); }
+    .test-banner { margin: 0 0 8px; padding: 6px 10px; border-radius: 8px; background: var(--amber-bg); color: var(--amber); font-size: 13px; }
+
+    /* ── 搜尋 ── */
+    .search { position: relative; }
+    .search input {
+      width: 100%; min-height: 48px; padding: 0 44px 0 14px;
+      border: 1px solid var(--stroke); border-radius: var(--radius);
+      background: var(--surface); color: var(--ink);
+      font-size: 16px; line-height: 1.4; -webkit-appearance: none; appearance: none;
+    }
+    .search input:focus { outline: 2px solid var(--blue); outline-offset: 1px; }
+    .search .clear {
+      position: absolute; right: 2px; top: 2px; width: 44px; height: 44px;
+      border: 0; background: transparent; color: var(--muted); font-size: 20px; border-radius: 8px;
     }
 
-    /* ── Header ── */
-    .site-header {
-      background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 100%);
-      color: white;
-      padding: 28px 20px 24px;
-      text-align: center;
+    /* ── 近一個月筆試 ── */
+    .quick { margin-top: 12px; border: 1px solid var(--stroke); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
+    .quick-toggle {
+      display: flex; align-items: center; gap: 8px; width: 100%; min-height: 52px; padding: 8px 14px;
+      border: 0; background: var(--surface); text-align: left;
     }
-    .site-header h1 { font-size: clamp(1.4rem, 5vw, 1.9rem); font-weight: 800; letter-spacing: -.02em; }
-    .site-header p { margin-top: 5px; font-size: .85rem; opacity: .65; }
-    .updated-chip {
-      display: inline-block;
-      margin-top: 10px;
-      background: rgba(255,255,255,.12);
-      border-radius: 20px;
-      padding: 3px 12px;
-      font-size: .72rem;
-      opacity: .8;
+    .quick-toggle .t { font-size: 16px; font-weight: 800; }
+    .quick-toggle .m { margin-left: auto; font-size: 13px; color: var(--muted); white-space: nowrap; }
+    .quick-toggle .chev { width: 10px; height: 10px; border-right: 2px solid var(--blue); border-bottom: 2px solid var(--blue); transform: rotate(45deg); transition: transform .15s; margin: 0 2px 4px 2px; flex: 0 0 auto; }
+    .quick-toggle[aria-expanded="true"] .chev { transform: rotate(-135deg); margin-bottom: -4px; }
+    .quick-body { border-top: 1px solid var(--stroke); padding: 4px 0 6px; }
+    .quick-empty { padding: 10px 14px 12px; color: var(--muted); font-size: 14px; }
+    .qday { padding: 6px 0 2px; }
+    .qday h3 { font-size: 14px; font-weight: 800; color: var(--blue); padding: 6px 14px 4px; background: var(--blue-bg); }
+    .qrow { border-bottom: 1px solid #EEF2F7; }
+    .qrow:last-child { border-bottom: 0; }
+    .qrow-btn {
+      display: flex; align-items: center; gap: 6px; width: 100%; min-height: 46px; padding: 6px 14px;
+      border: 0; background: transparent; text-align: left; font-size: 15px;
     }
+    .qrow-btn .sub { font-weight: 700; }
+    .qrow-btn .sep { color: var(--stroke); }
+    .qrow-btn .org { color: var(--muted); font-size: 14px; }
+    .qrow-btn .chev { margin-left: auto; width: 8px; height: 8px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); flex: 0 0 auto; }
+    .qrow-btn[aria-expanded="true"] { background: #F7FAFD; }
+    .qrow-btn[aria-expanded="true"] .chev { transform: rotate(-135deg); }
+    .qrow-detail { padding: 2px 10px 10px; background: #F7FAFD; display: grid; gap: 8px; }
+    .qrow-detail .card { border-color: #B9CBE0; }
 
-    /* ── Source Tabs ── */
-    .source-tabs {
-      display: flex;
-      background: #1E293B;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-    .source-tab {
-      flex: 1;
-      padding: 10px 8px;
-      text-align: center;
-      font-size: .82rem;
-      font-weight: 600;
-      color: rgba(255,255,255,.45);
-      cursor: pointer;
-      border: none;
-      background: transparent;
-      border-bottom: 3px solid transparent;
-      transition: color .15s, border-color .15s;
-    }
-    .source-tab:hover { color: rgba(255,255,255,.75); }
-    .source-tab.active { color: #fff; border-bottom-color: var(--tab-color, #60A5FA); }
+    /* ── 狀態標籤 ── */
+    .tag { display: inline-block; padding: 1px 7px; border-radius: 5px; font-size: 12px; font-weight: 700; white-space: nowrap; background: var(--gray-bg); color: var(--ink); }
+    .tag[data-state="open"] { background: var(--green-bg); color: var(--green); }
+    .tag[data-state="upcoming"] { background: var(--amber-bg); color: var(--amber); }
+    .tag[data-state="closed"] { background: var(--red-bg); color: var(--red); }
+    .tag[data-state="pending"] { background: var(--blue-bg); color: var(--blue); }
+    .tag[data-state="past"] { background: var(--gray-bg); color: var(--muted); }
+    .tag[data-state="mixed"] { background: var(--blue-bg); color: var(--blue); }
 
-    /* ── Filter Bar ── */
-    .filter-bar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0 14px;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+    /* ── 查詢入口 ── */
+    .views { display: flex; gap: 6px; margin-top: 12px; }
+    .views button {
+      flex: 1 1 0; min-height: 44px; padding: 4px 6px; border: 1px solid var(--stroke); border-radius: 8px;
+      background: var(--surface); color: var(--blue); font-weight: 700; font-size: 14px; line-height: 1.2;
     }
-    .filter-bar::-webkit-scrollbar { display: none; }
-    .filter-tabs { display: flex; gap: 6px; padding: 9px 0; width: max-content; min-width: 100%; }
-    .tab-btn {
-      flex-shrink: 0;
-      border: 1.5px solid var(--border);
-      border-radius: 20px;
-      padding: 5px 14px;
-      font-size: .8rem;
-      font-weight: 500;
-      cursor: pointer;
-      background: transparent;
-      color: var(--text-secondary);
-      transition: all .15s;
-      white-space: nowrap;
-    }
-    .tab-btn:hover { background: #F1F5F9; }
-    .tab-btn.active {
-      background: var(--active-color, #0F172A);
-      border-color: transparent;
-      color: #fff;
-    }
+    .views button[aria-pressed="true"] { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .organizer { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 14px; color: var(--muted); }
+    .organizer select { flex: 1 1 auto; min-height: 44px; padding: 0 10px; border: 1px solid var(--stroke); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; font-size: 15px; }
 
-    /* ── Alert ── */
-    .alert-wrap { padding: 12px 14px 0; }
-    .alert-banner {
-      background: #FEF3C7;
-      border: 1px solid #F59E0B;
-      border-radius: 10px;
-      padding: 9px 14px;
-      font-size: .82rem;
-      color: #92400E;
-      display: flex;
-      gap: 8px;
-      align-items: flex-start;
-    }
+    /* ── 內容區 ── */
+    .content { display: grid; gap: 10px; margin-top: 14px; }
+    .content h2 { font-size: 15px; font-weight: 800; color: var(--muted); margin-top: 6px; }
+    .content h2:first-child { margin-top: 0; }
+    .empty { color: var(--muted); font-size: 14px; padding: 4px 0; }
+    .card { display: grid; gap: 5px; padding: 12px; border: 1px solid var(--stroke); border-radius: var(--radius); background: var(--surface); }
+    .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .card h3, .card h4 { font-size: 16px; font-weight: 800; line-height: 1.3; }
+    .card .meta { font-size: 12px; color: var(--muted); }
+    .dates { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 10px; padding: 4px 0 2px; }
+    .dates div { min-width: 0; }
+    .dates dt { font-size: 12px; color: var(--muted); }
+    .dates dd { font-weight: 700; font-variant-numeric: tabular-nums; }
+    .dates dd .sub { display: block; font-size: 12px; font-weight: 400; color: var(--muted); }
+    .dates dd.closed-text { color: var(--red); }
+    .line { font-size: 13px; color: var(--muted); }
+    .hint { font-size: 13px; color: var(--amber); background: var(--amber-bg); padding: 4px 8px; border-radius: 6px; }
+    .links { display: flex; flex-wrap: wrap; gap: 6px 10px; margin-top: 4px; }
+    .links a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 12px; border-radius: 8px; text-decoration: none; font-weight: 700; border: 1px solid var(--stroke); color: var(--blue); background: var(--surface); flex: 1 1 auto; }
+    .links a.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .links a.text { border: 0; flex: 0 0 auto; padding: 0 4px; }
+    details.fold { border: 1px dashed var(--stroke); border-radius: var(--radius); padding: 0 10px; }
+    details.fold > summary { min-height: 44px; display: flex; align-items: center; font-weight: 700; color: var(--blue); cursor: pointer; list-style: none; }
+    details.fold > summary::-webkit-details-marker { display: none; }
+    details.fold > summary::before { content: "▸"; margin-right: 6px; font-size: 12px; }
+    details.fold[open] > summary::before { content: "▾"; }
+    details.fold .inner { display: grid; gap: 8px; padding: 0 0 10px; }
+    .catalog { display: grid; gap: 6px; }
+    .catalog button { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 6px 12px; border: 1px solid var(--stroke); border-radius: 8px; background: var(--surface); text-align: left; }
+    .catalog button .n { flex: 1 1 auto; font-weight: 700; }
+    .catalog button .o { font-size: 12px; color: var(--muted); white-space: nowrap; }
+    .subject-head { background: #F7FAFD; }
+    .back { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; border: 0; background: transparent; color: var(--blue); font-weight: 700; }
 
-    /* ── Layout ── */
-    .container { max-width: 680px; margin: 0 auto; padding: 16px 14px 56px; }
-
-    /* ── Section Header ── */
-    .group-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin: 20px 0 10px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid var(--group-color, #E2E8F0);
-    }
-    .group-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--group-color); }
-    .group-label { font-size: .78rem; font-weight: 700; color: var(--group-color); letter-spacing: .06em; text-transform: uppercase; }
-    .group-count { margin-left: auto; font-size: .72rem; color: var(--text-muted); background: #F1F5F9; border-radius: 10px; padding: 1px 8px; }
-
-    /* ── Book Section ── */
-    .book-section { margin-bottom: 10px; transition: opacity .15s; }
-    .book-section.hidden { display: none; }
-
-    /* ── Exam Card ── */
-    .exam-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      transition: box-shadow .18s, transform .18s;
-    }
-    .exam-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
-    .exam-card.past { opacity: .4; }
-
-    .card-accent { height: 4px; background: var(--book-color); }
-
-    .card-body { padding: 14px 16px 16px; }
-
-    /* Book title row */
-    .card-title-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-    .book-icon-sm {
-      width: 36px; height: 36px;
-      border-radius: 9px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-    }
-    .book-name { font-size: .95rem; font-weight: 700; line-height: 1.3; }
-    .book-name small { display: block; font-size: .72rem; font-weight: 500; color: var(--text-muted); margin-top: 1px; }
-    .book-link-btn {
-      margin-left: auto;
-      flex-shrink: 0;
-      font-size: .72rem;
-      color: var(--text-muted);
-      text-decoration: none;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 3px 8px;
-      white-space: nowrap;
-    }
-    .book-link-btn:hover { color: var(--text-secondary); border-color: #CBD5E1; }
-
-    /* ── Written exam section ── */
-    .written-section {}
-    .exam-date-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-    .exam-date-big { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; }
-    .exam-date-big .y { font-size: .75rem; font-weight: 500; color: var(--text-muted); display: block; margin-bottom: 1px; }
-    .exam-date-big .wd { font-size: .8rem; font-weight: 500; color: var(--text-secondary); margin-left: 4px; }
-
-    /* Status badge */
-    .status-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: .76rem; font-weight: 600;
-      white-space: nowrap; flex-shrink: 0;
-    }
-    .status-badge::before { content:""; width:6px; height:6px; border-radius:50%; background:currentColor; opacity:.7; }
-    .s-open     { background:#DCFCE7; color:#15803D; }
-    .s-soon     { background:#FEF3C7; color:#B45309; }
-    .s-closed   { background:#FEE2E2; color:#B91C1C; }
-    .s-upcoming { background:#EFF6FF; color:#1D4ED8; }
-    .s-past     { background:#F1F5F9; color:#64748B; }
-    .s-computer { background:#F3E8FF; color:#7C3AED; }
-
-    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; margin-bottom: 12px; }
-    .info-item label { display:block; font-size:.68rem; font-weight:600; color:var(--text-muted); letter-spacing:.05em; text-transform:uppercase; margin-bottom:2px; }
-    .info-item span { font-size:.84rem; font-weight:500; color:var(--text-secondary); }
-    .info-item span.hi { color:var(--text-primary); font-weight:600; }
-    .warn span { color:#B45309; }
-
-    /* ── Computer exam section ── */
-    .computer-section {
-      background: #FAFAFA;
-      border-radius: 10px;
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .computer-icon { font-size: 1.6rem; flex-shrink: 0; }
-    .computer-text {}
-    .computer-title { font-size: .9rem; font-weight: 700; color: #7C3AED; }
-    .computer-desc { font-size: .78rem; color: var(--text-secondary); margin-top: 3px; }
-
-    /* Note */
-    .card-note {
-      font-size: .78rem; color: var(--text-secondary);
-      background: #F8FAFC; border-radius: 8px;
-      padding: 7px 11px; margin-bottom: 12px;
-    }
-
-    /* Action button */
-    .reg-btn {
-      display: block;
-      background: var(--book-color);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-size: .86rem; font-weight: 600;
-      text-align: center;
-      text-decoration: none;
-      cursor: pointer;
-      transition: filter .15s, transform .15s;
-    }
-    .reg-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
-    .reg-btn.disabled { background:#E2E8F0; color:#94A3B8; pointer-events:none; }
-
-    /* Divider */
-    .section-divider { height: 1px; background: var(--border); margin: 4px 0 12px; }
-    .exam-divider { border: none; border-top: 1px dashed var(--border); margin: 10px 0; }
-    .dim-section { opacity: 0.45; }
-
-    /* ── Empty / Footer ── */
-    .empty-state { text-align:center; padding:48px 24px; color:var(--text-muted); display:none; }
-    .empty-state.show { display:block; }
-    .site-footer {
-      text-align:center; padding:20px 16px;
-      font-size:.75rem; color:var(--text-muted);
-      border-top: 1px solid var(--border);
-    }
-    .site-footer a { color:var(--text-muted); text-decoration:none; }
-
-    @media (max-width:400px) {
-      .info-grid { grid-template-columns: 1fr; }
-      .exam-date-big { font-size: 1.3rem; }
-    }
+    footer { margin-top: 28px; padding-top: 12px; border-top: 1px solid var(--stroke); font-size: 12px; color: var(--muted); }
+    footer p + p { margin-top: 4px; }
+    @media (min-width: 480px) { body { font-size: 16px; } }
   </style>
 </head>
 <body>
+<main>
+  <header class="hdr">
+    <p class="brand" id="brand"></p>
+    <h1 id="title">考照日期</h1>
+    <p class="checked">資料核對 <span id="checked"></span></p>
+  </header>
+  <p class="test-banner" id="testBanner" hidden></p>
 
-<header class="site-header">
-  <h1 id="site-title"></h1>
-  <p id="site-subtitle"></p>
-  <span class="updated-chip" id="updated-label"></span>
-</header>
-
-<div class="source-tabs" id="sourceTabs"></div>
-
-<div class="filter-bar"><div class="filter-tabs" id="filterTabs"></div></div>
-
-<div class="alert-wrap" id="alertWrap" style="display:none">
-  <div class="alert-banner">⚠️ <span id="alertText"></span></div>
-</div>
-
-<div class="container">
-  <div id="bookList"></div>
-  <div class="empty-state" id="emptyState">
-    <div style="font-size:2.5rem">📭</div>
-    <p>目前沒有符合的考試</p>
+  <div class="search">
+    <label class="sr-only" for="q">搜尋考科</label>
+    <input id="q" type="search" placeholder="輸入考科或簡稱" autocomplete="off" autocorrect="off" enterkeyhint="search">
+    <button class="clear" id="qClear" type="button" aria-label="清除搜尋" hidden>×</button>
   </div>
-</div>
 
-<footer class="site-footer">
-  <p>資料僅供參考，報名請以官方公告為準。</p>
-  <p style="margin-top:5px">由 <a id="footer-pub" href="#"></a> 整理提供</p>
-</footer>
+  <section class="quick" aria-labelledby="quickTitle">
+    <button class="quick-toggle" id="quickToggle" type="button" aria-expanded="false" aria-controls="quickBody">
+      <span class="t" id="quickTitle">近一個月筆試</span>
+      <span class="m" id="quickMeta"></span>
+      <span class="chev" aria-hidden="true"></span>
+    </button>
+    <div class="quick-body" id="quickBody" hidden></div>
+  </section>
+
+  <div class="views" role="group" aria-label="查詢入口">
+    <button type="button" data-view="home" aria-pressed="true">近期報名</button>
+    <button type="button" data-view="closed" aria-pressed="false">已報名<br>查考試日</button>
+    <button type="button" data-view="catalog" aria-pressed="false">全部考科</button>
+  </div>
+  <label class="organizer" id="organizerWrap" hidden>辦理單位
+    <select id="organizer"><option value="">全部</option></select>
+  </label>
+
+  <section class="content" id="content" aria-live="polite"></section>
+
+  <footer>
+    <p>資料僅供參考，報名與名額請以各辦理單位官方公告為準。</p>
+    <p>由 <a id="pub" href="#" target="_blank" rel="noopener"></a> 整理提供</p>
+  </footer>
+</main>
 
 <script src="data.js"></script>
 <script>
-// ── Helpers ──────────────────────────────────────────────
-function pd(s) { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
-function fmt(s) { const d=pd(s); return `${d.getMonth()+1}/${d.getDate()}`; }
-function fmtFull(s) { const d=pd(s); return `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`; }
-const WD = ['日','一','二','三','四','五','六'];
-function wd(s) { return WD[pd(s).getDay()]; }
-function diff(s) { const t=new Date(); t.setHours(0,0,0,0); return Math.round((pd(s)-t)/86400000); }
+(() => {
+  // ── 基本設定 ───────────────────────────────────────────
+  const subjects = new Map(SUBJECTS.map(s => [s.id, s]));
+  const WEEK = "日一二三四五六";
+  const TAG = { open: "報名期間", upcoming: "即將開放", closed: "已截止報名", past: "已考完", pending: "日期已公告", mixed: "各場狀態不同" };
+  const orgLabel = g => (ORGANIZERS[g] || {}).label || g;
+  const $ = id => document.getElementById(id);
+  const content = $("content"), input = $("q"), quickBody = $("quickBody"), quickToggle = $("quickToggle");
 
-function writtenStatus(exam) {
-  const now = new Date(); now.setHours(0,0,0,0);
-  const examD = pd(exam.date), regS = pd(exam.regStart), regE = pd(exam.regEnd);
-  if (now > examD) return 'past';
-  if (now > regE)  return 'closed';
-  if (now >= regS) return diff(exam.regEnd) <= 7 ? 'soon' : 'open';
-  return 'upcoming';
-}
-
-function badgeHtml(status, exam) {
-  const map = {
-    open:     ['s-open',     '報名中'],
-    soon:     ['s-soon',     null],
-    closed:   ['s-closed',   '報名已截止'],
-    upcoming: ['s-upcoming', null],
-    past:     ['s-past',     '已結束'],
-    computer: ['s-computer', '電腦應試'],
+  const state = {
+    view: "home",          // home | closed | catalog | subject
+    selected: [],          // subject ids（subject view）
+    organizer: "",
+    quickOpen: false,
+    openRows: new Set(),   // 快捷內展開的「科|日」
+    fakeNow: null          // 測試用：?now=YYYY-MM-DDTHH:mm
   };
-  let [cls, label] = map[status];
-  if (status === 'soon')     label = `報名截止倒數 ${diff(exam.regEnd)} 天`;
-  if (status === 'upcoming') label = `${diff(exam.regStart)} 天後開放報名`;
-  return `<span class="status-badge ${cls}">${label}</span>`;
-}
 
-// ── Card builder ─────────────────────────────────────────
-function buildCard(book) {
-  const written  = book.exams.filter(e => e.examType === 'written');
-  const compExam = book.exams.find(e => e.examType === 'computer');
-  const allPast  = written.length > 0 && written.every(e => writtenStatus(e) === 'past') && !compExam;
-  const typeLabel = compExam && written.length > 0 ? '筆試 + 電腦應試'
-                  : compExam ? '電腦應試' : '筆試';
-
-  let examSections = '';
-
-  written.forEach((exam, idx) => {
-    const status = writtenStatus(exam);
-    const isPastExam = status === 'past';
-    const isWarn = status === 'soon';
-    if (idx > 0) examSections += '<div class="exam-divider"></div>';
-    examSections += `
-      <div class="written-section${isPastExam ? ' dim-section' : ''}">
-        <div class="exam-date-row">
-          <div class="exam-date-big">
-            <span class="y">${exam.date.slice(0,4)} 年</span>
-            ${fmt(exam.date)}<span class="wd">（${wd(exam.date)}）</span>
-          </div>
-          ${badgeHtml(status, exam)}
-        </div>
-        <div class="info-grid">
-          <div class="info-item">
-            <label>報名開始</label><span>${fmtFull(exam.regStart)}</span>
-          </div>
-          <div class="info-item${isWarn ? ' warn' : ''}">
-            <label>報名截止</label>
-            <span class="${isWarn ? 'hi' : ''}">${fmtFull(exam.regEnd)}</span>
-          </div>
-          <div class="info-item">
-            <label>考試地點</label><span>${exam.location}</span>
-          </div>
-          <div class="info-item">
-            <label>距考試</label>
-            <span>${isPastExam ? '已結束' : diff(exam.date) + ' 天'}</span>
-          </div>
-        </div>
-        ${exam.note ? `<div class="card-note">📌 ${exam.note}</div>` : ''}
-      </div>`;
+  // ── 時間（一律臺灣時間）──────────────────────────────
+  const fmt = new Intl.DateTimeFormat("sv-SE", { timeZone: SITE_CONFIG.timeZone || "Asia/Taipei",
+    year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+  const now = () => state.fakeNow || fmt.format(new Date()).replace(" ", "T");
+  const dateOnly = s => !!s && s.length === 10;
+  const startOf = s => dateOnly(s) ? s + "T00:00" : s;
+  const endOf = s => dateOnly(s) ? s + "T24:00" : s;     // 24:00 ＝ 隔天 00:00
+  const md = iso => `${Number(iso.slice(5, 7))}/${Number(iso.slice(8, 10))}`;
+  const weekday = iso => WEEK[new Date(iso.slice(0, 10) + "T00:00:00Z").getUTCDay()];
+  function readable(iso, today, withTime = true) {
+    const day = iso.slice(0, 10);
+    const year = day.slice(0, 4) === today.slice(0, 4) ? "" : day.slice(0, 4) + "/";
+    const time = withTime && iso.length > 10 ? " " + iso.slice(11, 16) : "";
+    return `${year}${md(day)}（${weekday(day)}）${time}`;
+  }
+  function plusOneMonth(today) {          // 下個月同日；沒有同日用該月最後一天
+    const [y, m, d] = today.split("-").map(Number);
+    const last = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();   // 下個月天數
+    return new Date(Date.UTC(y, m, Math.min(d, last))).toISOString().slice(0, 10);
+  }
+  function statusOf(ev, t) {
+    const today = t.slice(0, 10);
+    if (ev.cancelled) return "cancelled";
+    if (ev.date < today) return "past";
+    if (!ev.start || !ev.end) return "pending";
+    if (t < startOf(ev.start)) return "upcoming";
+    if (t < endOf(ev.end)) return "open";
+    return "closed";
+  }
+  const isActive = ev => ev.state === "open";
+  const byDate = (a, b) => a.date.localeCompare(b.date) || (a.label || "").localeCompare(b.label || "");
+  const byAction = (a, b) => {
+    const ka = isActive(a) ? endOf(a.end) : (a.start ? startOf(a.start) : a.date);
+    const kb = isActive(b) ? endOf(b.end) : (b.start ? startOf(b.start) : b.date);
+    return ka.localeCompare(kb) || byDate(a, b);
+  };
+  // 資料驗證：id／日期／mode／group 打錯的場次只警告並跳過，不讓整頁掛掉
+  const DATE_RE = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$/;
+  const VALID = SESSIONS.filter((e, i) => {
+    const bad = [];
+    if (!subjects.has(e.id)) bad.push("id 不存在於 SUBJECTS");
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(e.date || "")) bad.push("date 格式錯");
+    if (!["written", "fixed-computer"].includes(e.mode)) bad.push("mode 錯");
+    if (e.start && !DATE_RE.test(e.start)) bad.push("start 格式錯");
+    if (e.end && !DATE_RE.test(e.end)) bad.push("end 格式錯");
+    if (e.group && !ORGANIZERS[e.group]) bad.push("group 不存在於 ORGANIZERS");
+    if (!e.source) bad.push("缺 source");
+    if (bad.length) console.warn(`data.js SESSIONS[${i}] 已略過：${bad.join("、")}`, e);
+    return !bad.length;
   });
-
-  if (compExam) {
-    if (written.length > 0) examSections += '<div class="exam-divider"></div>';
-    examSections += `
-      <div class="computer-section">
-        <div class="computer-icon">🖥️</div>
-        <div class="computer-text">
-          <div class="computer-title">電腦應試・持續開放報名</div>
-          <div class="computer-desc">📍 ${compExam.location}</div>
-        </div>
-        ${badgeHtml('computer', compExam)}
-      </div>
-      ${compExam.note ? `<div class="card-note">📌 ${compExam.note}</div>` : ''}`;
+  function compute() {
+    const t = now();
+    return { t, today: t.slice(0, 10),
+      events: VALID.filter(e => !e.cancelled).map(e => ({ ...e, state: statusOf(e, t), group: e.group || subjects.get(e.id).group })) };
   }
 
-  const canReg = !!compExam || written.some(e => {
-    const s = writtenStatus(e);
-    return s === 'open' || s === 'soon' || s === 'upcoming';
-  });
-
-  return `
-  <div class="exam-card${allPast ? ' past' : ''}" style="--book-color:${book.color}">
-    <div class="card-accent"></div>
-    <div class="card-body">
-      <div class="card-title-row">
-        <div class="book-icon-sm" style="background:${book.color}22;color:${book.color}">${book.icon}</div>
-        <div class="book-name">
-          ${book.name}
-          <small>${book.group.toUpperCase()} · ${typeLabel}</small>
-        </div>
-        <a href="${book.officialSite}" target="_blank" class="book-link-btn">官網 ↗</a>
-      </div>
-      <div class="section-divider"></div>
-      ${examSections}
-      <a href="${book.officialSite}" target="_blank" class="reg-btn${canReg ? '' : ' disabled'}">${canReg ? '前往官方報名頁面 →' : '報名已截止'}</a>
-    </div>
-  </div>`;
-}
-
-// ── Render ────────────────────────────────────────────────
-let activeGroup = 'all';
-let activeBook  = 'all';
-
-function render() {
-  const list = document.getElementById('bookList');
-  const grouped = {};
-
-  GROUPS.forEach(g => { grouped[g.id] = []; });
-  BOOKS.forEach(b => {
-    if (activeGroup !== 'all' && b.group !== activeGroup) return;
-    if (activeBook  !== 'all' && b.id    !== activeBook)  return;
-    if (!grouped[b.group]) grouped[b.group] = [];
-    grouped[b.group].push(b);
-  });
-
-  let html = '';
-  let total = 0;
-  GROUPS.forEach(g => {
-    const books = grouped[g.id] || [];
-    if (!books.length) return;
-    total += books.length;
-    html += `
-      <div class="group-header" style="--group-color:${g.color}">
-        <span class="group-dot"></span>
-        <span class="group-label">${g.label}</span>
-        <span class="group-count">${books.length} 科</span>
-      </div>`;
-    books.forEach(b => {
-      html += `<div class="book-section">${buildCard(b)}</div>`;
-    });
-  });
-
-  list.innerHTML = html;
-  document.getElementById('emptyState').classList.toggle('show', total === 0);
-
-  // sync tab active
-  document.querySelectorAll('.source-tab').forEach(t =>
-    t.classList.toggle('active', t.dataset.gid === activeGroup));
-  document.querySelectorAll('.tab-btn').forEach(t =>
-    t.classList.toggle('active', t.dataset.bid === activeBook));
-}
-
-// ── Alerts ────────────────────────────────────────────────
-function showAlerts() {
-  const msgs = [];
-  BOOKS.forEach(b => {
-    b.exams.forEach(e => {
-      if (e.examType !== 'written') return;
-      const s = writtenStatus(e);
-      if (s === 'soon') msgs.push(`${b.shortName} 報名截止倒數 ${diff(e.regEnd)} 天`);
-      if (s === 'upcoming' && diff(e.regStart) <= 7)
-        msgs.push(`${b.shortName} 報名 ${diff(e.regStart)} 天後開放`);
-    });
-  });
-  if (msgs.length) {
-    document.getElementById('alertWrap').style.display = '';
-    document.getElementById('alertText').textContent = msgs.join('　|　');
+  // ── DOM 小工具 ──────────────────────────────────────────
+  const el = (tag, text, cls) => { const n = document.createElement(tag); if (text != null) n.textContent = text; if (cls) n.className = cls; return n; };
+  const tagEl = (st, text) => { const n = el("span", text || TAG[st], "tag"); n.dataset.state = st; return n; };
+  function fold(title, nodes, open = false) {
+    const d = el("details", null, "fold"); d.open = open;
+    d.append(el("summary", title)); const inner = el("div", null, "inner"); inner.append(...nodes); d.append(inner); return d;
   }
-}
+  const displayName = ev => (ev.title || subjects.get(ev.id).short) + (ev.label ? "・" + ev.label : "");
 
-// ── Init ──────────────────────────────────────────────────
-function init() {
-  document.title = SITE_CONFIG.title;
-  document.getElementById('site-title').textContent    = SITE_CONFIG.title;
-  document.getElementById('site-subtitle').textContent = SITE_CONFIG.subtitle;
-  document.getElementById('updated-label').textContent = `更新：${SITE_CONFIG.lastUpdated}`;
-  const fp = document.getElementById('footer-pub');
-  fp.textContent = SITE_CONFIG.publisherName;
-  fp.href = SITE_CONFIG.publisherUrl;
+  // ── 場次卡 ──────────────────────────────────────────────
+  function card(ev, today) {
+    const s = subjects.get(ev.id);
+    const c = el("article", null, "card");
+    const head = el("div", null, "card-head");
+    head.append(el("h4", displayName(ev)), tagEl(ev.state));
+    c.append(head);
+    if (ev.tentative) c.append(el("p", "官方預定時程，確切報名時刻與考區以該次簡章為準", "meta"));
 
-  // Source tabs
-  const st = document.getElementById('sourceTabs');
-  const allTab = document.createElement('button');
-  allTab.className = 'source-tab active';
-  allTab.dataset.gid = 'all';
-  allTab.style.setProperty('--tab-color','#60A5FA');
-  allTab.textContent = '全部';
-  allTab.onclick = () => { activeGroup='all'; activeBook='all'; buildBookTabs(); render(); };
-  st.appendChild(allTab);
+    const dl = el("dl", null, "dates");
+    const item = (k, v, cls) => { const w = el("div"); const dd = el("dd", null, cls); if (typeof v === "string") dd.textContent = v; else dd.append(...v); w.append(el("dt", k), dd); return w; };
+    if (!ev.start || !ev.end) {
+      dl.append(item("報名資訊", "請查官方公告"));
+    } else if (ev.state === "upcoming") {
+      dl.append(item("開放報名", [readable(ev.start, today), ...(dateOnly(ev.start) ? [el("span", "時刻請查官網", "sub")] : [])]));
+    } else {
+      const closedTxt = ev.state === "closed" || ev.state === "past" ? "已截止" : "";
+      dl.append(item("報名截止", [readable(ev.end, today), ...(closedTxt ? [el("span", closedTxt, "sub")] : [])], ev.state === "closed" ? "closed-text" : ""));
+    }
+    dl.append(item("考試日期", [readable(ev.date, today), ...(ev.time ? [el("span", ev.time, "sub")] : [])]));
+    c.append(dl);
+    if (ev.start && ev.end) c.append(el("p", `報名期間 ${readable(ev.start, today)} – ${readable(ev.end, today)}`, "line"));
+    if (ev.city) c.append(el("p", "考區 " + ev.city, "line"));
+    c.append(el("p", [orgLabel(ev.group), ev.mode === "written" ? "筆試" : "固定梯次電腦測驗", ev.tentative ? "預定" : "", "核對 " + (ev.checked || SITE_CONFIG.checked)].filter(Boolean).join("・"), "meta"));
+    if (ev.state === "open" && dateOnly(ev.end) && ev.end === today) c.append(el("p", "今日截止，確切時間請查官網", "hint"));
+    if (ev.state === "open" && dateOnly(ev.start) && ev.start === today) c.append(el("p", "今日開放報名，確切時間請查官網", "hint"));
 
-  GROUPS.forEach(g => {
-    const btn = document.createElement('button');
-    btn.className = 'source-tab';
-    btn.dataset.gid = g.id;
-    btn.style.setProperty('--tab-color', g.color);
-    btn.textContent = g.label;
-    btn.onclick = () => { activeGroup=g.id; activeBook='all'; buildBookTabs(); render(); };
-    st.appendChild(btn);
-  });
+    const links = el("div", null, "links");
+    const a = el("a"); a.target = "_blank"; a.rel = "noopener noreferrer";
+    if (isActive(ev)) { a.href = ev.link || s.official; a.textContent = "查官方報名 ↗"; a.className = "primary"; }
+    else { a.href = ev.source; a.textContent = "查看官方資料 ↗"; }
+    links.append(a);
+    if (a.href !== ev.source) { const b = el("a", "官方時程", "text"); b.href = ev.source; b.target = "_blank"; b.rel = "noopener noreferrer"; links.append(b); }
+    c.append(links);
+    return c;
+  }
 
-  buildBookTabs();
-  showAlerts();
-  render();
-}
+  // ── 考科頁 ──────────────────────────────────────────────
+  // 同一考科多機構辦理（merge）才合併場次；related 只用來讓搜尋一併帶出相關考科，不混入場次
+  function subjectIds(s) {
+    return s.merge ? SUBJECTS.filter(o => o.merge === s.merge).map(o => o.id) : [s.id];
+  }
+  const quickKey = ev => subjects.get(ev.id).merge || ev.id;
+  function subjectView(s, data, heading) {
+    const ids = subjectIds(s);
+    const mine = data.events.filter(e => ids.includes(e.id));
+    const remaining = mine.filter(e => e.state !== "past" && e.state !== "closed").sort((a, b) => Number(isActive(b)) - Number(isActive(a)) || byDate(a, b));
+    const closed = mine.filter(e => e.state === "closed").sort(byDate);
+    const history = mine.filter(e => e.state === "past").sort((a, b) => byDate(b, a));
+    const nodes = [];
+    if (heading) nodes.push(el("h2", heading));
 
-function buildBookTabs() {
-  const bar = document.getElementById('filterTabs');
-  bar.innerHTML = '';
+    const head = el("article", null, "card subject-head");
+    head.append(el("h3", s.name));
+    const orgs = [...new Set([s.group, ...SUBJECTS.filter(o => s.merge && o.merge === s.merge).map(o => o.group), ...mine.map(e => e.group)])].map(orgLabel);
+    head.append(el("p", "辦理單位 " + orgs.join("／") + (s.group === "ipas" ? "・固定梯次電腦測驗" : ""), "meta"));
+    if (s.computer) head.append(el("p", "另有官方電腦應試場次，日期與名額請至官方查詢。", "line"));
+    if (!remaining.length && !closed.length) head.append(el("p", "本站尚未查到後續場次，請看該科官方公告。", "hint"));
+    const links = el("div", null, "links");
+    const mk = (href, text, cls) => { const a = el("a", text, cls); a.href = href; a.target = "_blank"; a.rel = "noopener noreferrer"; return a; };
+    if (s.computer) links.append(mk(s.computer, "查官方電腦場次 ↗", "primary"));
+    links.append(mk(s.official, "官方公告 ↗", s.computer ? "" : "primary"));
+    SUBJECTS.filter(o => s.merge && o.merge === s.merge && o.id !== s.id && o.computer).forEach(o => links.append(mk(o.computer, "查" + orgLabel(o.group) + "電腦場次 ↗")));
+    head.append(links);
+    nodes.push(head);
 
-  const allBtn = document.createElement('button');
-  allBtn.className = 'tab-btn active';
-  allBtn.dataset.bid = 'all';
-  allBtn.style.setProperty('--active-color','#0F172A');
-  allBtn.textContent = '全部考科';
-  allBtn.onclick = () => { activeBook='all'; render(); };
-  bar.appendChild(allBtn);
+    nodes.push(...remaining.map(e => card(e, data.today)));
+    if (closed.length) {
+      const cards = closed.map(e => card(e, data.today));
+      if (remaining.length) nodes.push(fold(`已截止報名的場次（${closed.length}）`, cards, true)); else nodes.push(...cards);
+    }
+    if (history.length) nodes.push(fold(`歷史場次（${history.length}）`, history.map(e => card(e, data.today))));
+    return nodes;
+  }
 
-  const visible = activeGroup === 'all'
-    ? BOOKS
-    : BOOKS.filter(b => b.group === activeGroup);
+  // ── 搜尋 ────────────────────────────────────────────────
+  const norm = s => (s || "").normalize("NFKC").toLowerCase().replace(/[\s（）()「」]/g, "");
+  function matches(s, q) {
+    const hay = norm([s.name, s.short, s.alias || "", orgLabel(s.group), ORGANIZERS[s.group]?.full || ""].join(" "));
+    return q.split(/\s+/).filter(Boolean).every(w => hay.includes(norm(w)));
+  }
+  function dedupeMerged(list) {
+    const seen = new Set(); return list.filter(s => { const k = s.merge || s.id; if (seen.has(k)) return false; seen.add(k); return true; });
+  }
+  function catalogList(items) {
+    const list = el("div", null, "catalog");
+    items.forEach(s => {
+      const b = el("button"); b.type = "button";
+      const orgs = s.merge ? [...new Set(SUBJECTS.filter(o => o.merge === s.merge).map(o => orgLabel(o.group)))].join("／") : orgLabel(s.group);
+      b.append(el("span", s.name, "n"), el("span", orgs, "o"));
+      if (s.computer) b.append(tagEl("pending", "電腦應試"));
+      if (s.group === "ipas") b.append(tagEl("pending", "固定梯次"));
+      b.addEventListener("click", () => pick([s.id]));
+      list.append(b);
+    });
+    return list;
+  }
+  function pick(ids) {
+    state.view = "subject"; state.selected = ids; input.value = ""; render();
+    content.scrollIntoView({ block: "start", behavior: "smooth" });
+  }
 
-  visible.forEach(b => {
-    const btn = document.createElement('button');
-    btn.className = 'tab-btn';
-    btn.dataset.bid = b.id;
-    btn.style.setProperty('--active-color', b.color);
-    btn.textContent = b.shortName;
-    btn.onclick = () => { activeBook=b.id; render(); };
-    bar.appendChild(btn);
-  });
-}
+  // ── 近一個月筆試 ────────────────────────────────────────
+  function renderQuick(data) {
+    const last = plusOneMonth(data.today);
+    const eligible = data.events.filter(e => e.mode === "written" && e.date >= data.today && e.date <= last).sort(byDate);
+    const subjectsCount = new Set(eligible.map(quickKey)).size;   // 多機構同科（merge）算一科
+    $("quickMeta").textContent = `${md(data.today)}–${md(last)}・${subjectsCount} 科`;
+    quickToggle.setAttribute("aria-expanded", String(state.quickOpen));
+    quickBody.hidden = !state.quickOpen;
+    quickBody.replaceChildren();
+    if (!eligible.length) { quickBody.append(el("p", "近一個月沒有已核對的筆試場次", "quick-empty")); return; }
 
-init();
+    const days = new Map();
+    eligible.forEach(e => { const k = quickKey(e); if (!days.has(e.date)) days.set(e.date, new Map()); const d = days.get(e.date); if (!d.has(k)) d.set(k, []); d.get(k).push(e); });
+    let rowNo = 0;
+    for (const [date, bySubject] of days) {
+      const wrap = el("section", null, "qday");
+      wrap.append(el("h3", `${md(date)}（${weekday(date)}）` + (date === data.today ? "・今天" : "")));
+      for (const [k, evs] of bySubject) {
+        const key = k + "|" + date;
+        const row = el("div", null, "qrow");
+        const btn = el("button", null, "qrow-btn"); btn.type = "button";
+        const states = [...new Set(evs.map(e => e.state))];
+        const st = states.length === 1 ? states[0] : "mixed";
+        const orgs = [...new Set(evs.map(e => orgLabel(e.group)))].join("／");
+        const shortName = evs[0].title || subjects.get(evs[0].id).short;
+        btn.append(el("span", shortName, "sub"), el("span", "｜", "sep"), el("span", orgs, "org"), el("span", "｜", "sep"), tagEl(st), el("span", null, "chev"));
+        btn.setAttribute("aria-expanded", String(state.openRows.has(key)));
+        btn.setAttribute("aria-label", `${shortName}，${orgs}，${TAG[st]}，${md(date)}`);
+        const detail = el("div", null, "qrow-detail"); detail.hidden = !state.openRows.has(key);
+        detail.id = "qrow-detail-" + (++rowNo); btn.setAttribute("aria-controls", detail.id);
+        detail.append(...evs.map(e => card(e, data.today)));
+        btn.addEventListener("click", () => {
+          const open = !state.openRows.has(key);
+          open ? state.openRows.add(key) : state.openRows.delete(key);
+          btn.setAttribute("aria-expanded", String(open)); detail.hidden = !open;
+        });
+        row.append(btn, detail); wrap.append(row);
+      }
+      quickBody.append(wrap);
+    }
+  }
+
+  // ── 主畫面 ──────────────────────────────────────────────
+  let lastDay = "", lastSig = "";
+  function render() {
+    const data = compute();
+    lastDay = data.today; lastSig = data.events.map(e => e.state).join("");
+    const q = input.value.trim();
+    $("qClear").hidden = !q;
+    renderQuick(data);
+    document.querySelectorAll(".views button").forEach(b => b.setAttribute("aria-pressed", String(!q && b.dataset.view === state.view)));
+    const showOrg = !q && state.view === "catalog";
+    $("organizerWrap").hidden = !showOrg;
+    content.replaceChildren();
+
+    if (q || state.view === "catalog") {
+      const group = showOrg ? state.organizer : "";
+      let hits = SUBJECTS.filter(s => (!group || s.group === group) && (!q || matches(s, q)));
+      if (q) hits.forEach(s => { const r = s.related && subjects.get(s.related); if (r && !hits.includes(r)) hits.push(r); });
+      const results = dedupeMerged(hits);
+      content.append(el("h2", q ? `搜尋「${q}」` : "全部考科"));
+      if (!results.length) content.append(el("p", "找不到這個考科，試試簡稱或正式名稱，例如「信託」「銀行內控」「證券普業」。", "empty"));
+      else if (q && results.length <= 3) results.forEach(s => content.append(...subjectView(s, data)));
+      else content.append(catalogList(results));
+      return;
+    }
+    if (state.view === "subject") {
+      const back = el("button", "‹ 回到近期報名", "back"); back.type = "button";
+      back.addEventListener("click", () => { state.view = "home"; state.selected = []; render(); });
+      content.append(back, ...subjectView(subjects.get(state.selected[0]), data));
+      return;
+    }
+    if (state.view === "closed") {
+      const closed = data.events.filter(e => e.state === "closed").sort(byDate);
+      content.append(el("h2", "已截止報名・尚未考試（依考試日）"));
+      content.append(...(closed.length ? closed.map(e => card(e, data.today)) : [el("p", "目前沒有已截止報名、尚未開考的已核對場次。", "empty")]));
+      const history = data.events.filter(e => e.state === "past").sort((a, b) => byDate(b, a));
+      if (history.length) content.append(fold(`歷史場次（${history.length}）`, history.map(e => card(e, data.today))));
+      return;
+    }
+    // home：近期報名
+    const open = data.events.filter(isActive).sort(byAction);
+    const upcoming = data.events.filter(e => e.state === "upcoming" || e.state === "pending").sort(byAction);
+    content.append(el("h2", "目前在報名期間（依截止先後）"));
+    content.append(...(open.length ? open.map(e => card(e, data.today)) : [el("p", "目前沒有報名期間內的定期場次。想考電腦應試的考科，請用搜尋查該科官方電腦場次。", "empty")]));
+    if (upcoming.length) {
+      const first = upcoming.slice(0, 4), rest = upcoming.slice(4);
+      content.append(el("h2", "即將開放與已公告場次（依開放報名先後）"), ...first.map(e => card(e, data.today)));
+      if (rest.length) content.append(fold(`看更多已公告場次（${rest.length}）`, rest.map(e => card(e, data.today))));
+    }
+  }
+
+  // ── 事件 ────────────────────────────────────────────────
+  quickToggle.addEventListener("click", () => { state.quickOpen = !state.quickOpen; render(); });
+  document.querySelectorAll(".views button").forEach(b => b.addEventListener("click", () => { state.view = b.dataset.view; state.selected = []; input.value = ""; render(); }));
+  input.addEventListener("input", () => { if (state.view === "subject") state.view = "home"; render(); });
+  $("qClear").addEventListener("click", () => { input.value = ""; render(); input.focus(); });
+  $("organizer").addEventListener("change", e => { state.organizer = e.target.value; render(); });
+
+  // 開頁、回到頁面、跨臺灣午夜：重算
+  function refreshIfChanged() {
+    const data = compute();
+    if (data.today !== lastDay || data.events.map(e => e.state).join("") !== lastSig) render();
+  }
+  setInterval(refreshIfChanged, 60_000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshIfChanged(); });
+  window.addEventListener("focus", refreshIfChanged);
+  window.addEventListener("pageshow", refreshIfChanged);
+
+  // ── 初始化 ──────────────────────────────────────────────
+  $("brand").textContent = SITE_CONFIG.brand || "";
+  $("title").textContent = SITE_CONFIG.title; document.title = SITE_CONFIG.title;
+  $("checked").textContent = SITE_CONFIG.checked;
+  $("pub").textContent = SITE_CONFIG.publisherName; $("pub").href = SITE_CONFIG.publisherUrl;
+  const sel = $("organizer");
+  [...new Set(SUBJECTS.map(s => s.group))].forEach(g => { const o = el("option", orgLabel(g)); o.value = g; sel.append(o); });
+
+  // 測試／預覽用：?now=2026-11-17 或 ?now=2026-11-22T09:00（臺灣時間）
+  function setNow(v) {
+    if (!v) { state.fakeNow = null; $("testBanner").hidden = true; render(); return; }
+    const t = v.length === 10 ? v + "T09:00" : v.slice(0, 16);
+    state.fakeNow = t; $("testBanner").hidden = false; $("testBanner").textContent = "測試模式：以臺灣時間 " + t.replace("T", " ") + " 計算（正式頁依實際時間）"; render();
+  }
+  window.EC = { setNow, render, state, compute, plusOneMonth };
+  const param = new URLSearchParams(location.search).get("now");
+  if (param && /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$/.test(param)) setNow(param); else render();
+})();
 </script>
 </body>
 </html>
